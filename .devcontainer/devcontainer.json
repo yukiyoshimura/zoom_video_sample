@@ -11,6 +11,6 @@
     }
   },
   "forwardPorts": [3000, 3001],
-  "postCreateCommand": "npm install",
+  "postCreateCommand": "curl -fsSL https://claude.ai/claude-cli-install.sh | sh && npm install",
   "remoteUser": "node"
 }

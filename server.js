@@ -20,11 +20,11 @@ app.post('/api/token', (req, res) => {
   }
 
   const payload = {
-    iss: process.env.ZOOM_VIDEO_SDK_KEY,
+    iss: process.env.ZOOM_CLIENT_ID,
     exp: Math.floor(Date.now() / 1000) + (60 * 60 * 2), // 2時間有効
     iat: Math.floor(Date.now() / 1000),
     aud: 'zoom',
-    appKey: process.env.ZOOM_VIDEO_SDK_KEY,
+    appKey: process.env.ZOOM_CLIENT_ID,
     tokenExp: Math.floor(Date.now() / 1000) + (60 * 60 * 2),
     alg: 'HS256',
     typ: 'JWT',
@@ -34,7 +34,7 @@ app.post('/api/token', (req, res) => {
   };
 
   try {
-    const token = jwt.sign(payload, process.env.ZOOM_VIDEO_SDK_SECRET);
+    const token = jwt.sign(payload, process.env.ZOOM_CLIENT_SECRET);
     res.json({ token });
   } catch (error) {
     console.error('JWT generation error:', error);

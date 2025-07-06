@@ -1,6 +1,6 @@
 class ZoomVideoConference {
     constructor() {
-        this.uitoolkit = null;
+        this.client = null;
         this.isJoined = false;
         this.initializeEventListeners();
     }
@@ -68,40 +68,26 @@ class ZoomVideoConference {
             // JWTトークンを生成
             const token = await this.generateToken(sessionName, userName);
 
-            // UI Toolkitの設定
-            const config = {
-                videoSDKJWT: token,
-                sessionName: sessionName,
-                userName: userName,
-                sessionPasscode: sessionPasscode,
-                features: ['video', 'audio', 'settings', 'users', 'chat', 'share'],
-                options: {
-                    init: {
-                        language: 'ja-JP',
-                        stayAwake: true
-                    },
-                    audio: {
-                        autoplay: true,
-                        enable: true
-                    },
-                    video: {
-                        localVideo: {
-                            enable: true
-                        }
-                    },
-                    share: {
-                        enable: true
-                    }
-                }
-            };
+            // ZoomVideoSDKの読み込み待機
+            if (typeof window.ZoomVideo === 'undefined') {
+                this.showStatus('Zoom Video SDKの読み込みを待機中...', 'info');
+                await this.waitForZoomVideo();
+            }
 
-            // UI Toolkitを初期化
-            this.uitoolkit = new ZoomVideoUiToolkit();
+            // Zoom Video SDKを初期化
+            this.client = window.ZoomVideo.createClient();
             
             // 会議に参加
-            await this.uitoolkit.joinSession(
-                document.getElementById('video-element'),
-                config
+            await this.client.init({
+                language: 'ja-JP',
+                stayAwake: true
+            });
+            
+            await this.client.join(
+                sessionName,
+                token,
+                userName,
+                sessionPasscode
             );
 
             this.isJoined = true;
@@ -117,13 +103,33 @@ class ZoomVideoConference {
         }
     }
 
+    async waitForZoomVideo() {
+        return new Promise((resolve, reject) => {
+            let attempts = 0;
+            const maxAttempts = 100; // 10秒間待機
+            
+            const checkInterval = setInterval(() => {
+                attempts++;
+                console.log(`ZoomVideo check attempt ${attempts}, window.ZoomVideo:`, typeof window.ZoomVideo);
+                
+                if (typeof window.ZoomVideo !== 'undefined') {
+                    clearInterval(checkInterval);
+                    resolve();
+                } else if (attempts >= maxAttempts) {
+                    clearInterval(checkInterval);
+                    reject(new Error('ZoomVideo SDK の読み込みがタイムアウトしました'));
+                }
+            }, 100);
+        });
+    }
+
     async leaveSession() {
-        if (!this.isJoined || !this.uitoolkit) {
+        if (!this.isJoined || !this.client) {
             return;
         }
 
         try {
-            await this.uitoolkit.leaveSession();
+            await this.client.leave();
             this.isJoined = false;
             
             document.getElementById('video-container').style.display = 'none';
