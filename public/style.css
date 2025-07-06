@@ -71,12 +71,97 @@ button:disabled {
     margin-top: 2rem;
 }
 
+.meeting-layout {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
 #video-element {
-    width: 100%;
+    flex: 1;
     height: 500px;
     border-radius: 10px;
     overflow: hidden;
     background: #000;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+}
+
+#video-element video, #video-element canvas {
+    border-radius: 8px;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+}
+
+#participants-panel {
+    width: 250px;
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 1rem;
+    border: 1px solid #dee2e6;
+}
+
+#participants-panel h3 {
+    margin: 0 0 1rem 0;
+    color: #495057;
+    font-size: 1.1rem;
+    border-bottom: 1px solid #dee2e6;
+    padding-bottom: 0.5rem;
+}
+
+#participants-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.participant-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    background: white;
+    border-radius: 5px;
+    border: 1px solid #e9ecef;
+    font-size: 0.9rem;
+}
+
+.participant-item.self {
+    background: #e3f2fd;
+    border-color: #90caf9;
+}
+
+.participant-status {
+    display: flex;
+    gap: 0.25rem;
+}
+
+.status-icon {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.status-icon.video-on {
+    background: #4caf50;
+}
+
+.status-icon.video-off {
+    background: #f44336;
+}
+
+.status-icon.audio-on {
+    background: #2196f3;
+}
+
+.status-icon.audio-off {
+    background: #ff9800;
 }
 
 .controls {

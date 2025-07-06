@@ -15,29 +15,33 @@ app.use(express.static('public'));
 app.post('/api/token', (req, res) => {
   const { sessionName, userIdentity, roleType } = req.body;
   
+  console.log('🔑 Token generation request:', { sessionName, userIdentity, roleType });
+  
   if (!sessionName || !userIdentity) {
+    console.log('❌ Missing required fields');
     return res.status(400).json({ error: 'sessionName and userIdentity are required' });
   }
 
   const payload = {
-    iss: process.env.ZOOM_CLIENT_ID,
-    exp: Math.floor(Date.now() / 1000) + (60 * 60 * 2), // 2時間有効
+    app_key: process.env.SDK_KEY,
+    tpc: sessionName,
+    role_type: roleType || 1,
+    user_identity: userIdentity,
+    version: 1,
     iat: Math.floor(Date.now() / 1000),
-    aud: 'zoom',
-    appKey: process.env.ZOOM_CLIENT_ID,
-    tokenExp: Math.floor(Date.now() / 1000) + (60 * 60 * 2),
-    alg: 'HS256',
-    typ: 'JWT',
-    sessionName: sessionName,
-    userIdentity: userIdentity,
-    roleType: roleType || 1
+    exp: Math.floor(Date.now() / 1000) + (60 * 60 * 2) // 2時間有効
   };
 
+  console.log('📝 JWT payload:', payload);
+  console.log('🔐 Using SDK Key:', process.env.SDK_KEY);
+  console.log('🔐 Using SDK Secret:', process.env.SDK_SECRET ? '[HIDDEN]' : 'NOT SET');
+
   try {
-    const token = jwt.sign(payload, process.env.ZOOM_CLIENT_SECRET);
+    const token = jwt.sign(payload, process.env.SDK_SECRET);
+    console.log('✅ Token generated successfully');
     res.json({ token });
   } catch (error) {
-    console.error('JWT generation error:', error);
+    console.error('❌ JWT generation error:', error);
     res.status(500).json({ error: 'Token generation failed' });
   }
 });

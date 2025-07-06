@@ -19,8 +19,16 @@
         </div>
 
         <div id="video-container" style="display: none;">
-            <div id="video-element"></div>
+            <div class="meeting-layout">
+                <div id="video-element"></div>
+                <div id="participants-panel">
+                    <h3>参加者一覧</h3>
+                    <div id="participants-list"></div>
+                </div>
+            </div>
             <div class="controls">
+                <button id="toggleVideoButton">ビデオON/OFF</button>
+                <button id="toggleAudioButton">音声ON/OFF</button>
                 <button id="leaveButton">会議を退出</button>
             </div>
         </div>
@@ -28,7 +36,7 @@
         <div id="status" class="status"></div>
     </div>
 
-    <script src="https://unpkg.com/@zoom/videosdk@latest/dist/lib/index.js"></script>
+    <script src="zoom-videosdk.js"></script>
     <script src="app.js"></script>
 </body>
 </html>
