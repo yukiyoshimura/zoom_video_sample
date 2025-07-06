@@ -51,6 +51,11 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
+// UIKitページ
+app.get('/uikit', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'uikit.html'));
+});
+
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
