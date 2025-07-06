@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zoom Video Conference</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Zoom Video Conference</h1>
+        
+        <div id="join-form" class="form-container">
+            <h2>会議に参加</h2>
+            <input type="text" id="sessionName" placeholder="セッション名" value="test-session">
+            <input type="text" id="userName" placeholder="ユーザー名" value="">
+            <input type="password" id="sessionPasscode" placeholder="パスコード（任意）" value="">
+            <button id="joinButton">会議に参加</button>
+        </div>
+
+        <div id="video-container" style="display: none;">
+            <div id="video-element"></div>
+            <div class="controls">
+                <button id="leaveButton">会議を退出</button>
+            </div>
+        </div>
+
+        <div id="status" class="status"></div>
+    </div>
+
+    <script src="https://unpkg.com/@zoom/videosdk-ui-toolkit@latest/dist/zoom-video-ui-toolkit.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

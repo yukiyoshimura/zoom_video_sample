@@ -1,0 +1,16 @@
+{
+  "name": "Zoom Video SDK Development",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:18",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-vscode.vscode-json",
+        "bradlc.vscode-tailwindcss",
+        "esbenp.prettier-vscode"
+      ]
+    }
+  },
+  "forwardPorts": [3000, 3001],
+  "postCreateCommand": "npm install",
+  "remoteUser": "node"
+}
